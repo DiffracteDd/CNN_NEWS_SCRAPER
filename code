@@ -1,0 +1,19 @@
+import requests
+from bs4 import BeautifulSoup as bs
+from urllib.request import urlopen
+import logging
+cnn_url="https://edition.cnn.com/travel/article/scenic-airport-landings-2020/index.html"
+urlclient=urlopen(cnn_url)
+url_page=urlclient.read()
+cnn_html=bs(url_page,'html.parser')
+article_headline = cnn_html.find("div", class_="headline__wrapper")
+headline=article_headline.text.split("\n") #to split the contents and obtain only the text
+text ="HEADLINE : " + headline[3]
+article_date = cnn_html.find("div", class_="timestamp")
+article_daten=article_date.text.split("\n")
+text +="\n" + "LAST UPDATED : " + article_daten[2]
+article_content = cnn_html.find("div",class_="article__content")
+content = article_content('p')
+for i in range(len(content)):
+    text += content[i].text
+print(bs(text))
